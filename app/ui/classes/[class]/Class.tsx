@@ -29,7 +29,6 @@ export function Class({className}:{className:string}) {
             .then(res => {
                 setTasks(res);
                 setIsLoading(!isLoading);
-                console.log(tasks);
             });
     }
 
@@ -38,6 +37,7 @@ export function Class({className}:{className:string}) {
         let formData = new FormData();
         formData.append("classId", decodeURIComponent(className));
         formData.append("taskName", values.taskName);
+        formData.append("dueDate", values.dueDate);
         formData.append("subTasks", values.subTasks);
         const options = {
             method: 'POST',
@@ -52,6 +52,34 @@ export function Class({className}:{className:string}) {
             });
     }
 
+    const handleDeleteTask = (task:any) => {
+        const url = "http://localhost:8080/task?id=" + task.id;
+        const options = {
+            method: 'DELETE'
+        }
+        fetch(url, options)
+            .then(() => getTasks());
+    }
+
+    const handleUpdateTask = (task:any) => {
+        const url = "http://localhost:8080/task";
+        let formData = new Blob([JSON.stringify(task)]);
+        const options = {
+            method: 'PUT',
+            headers: {
+                "content-type": 'application/json'
+            },
+            body: formData
+        }
+        fetch(url, options)
+            .then(res => res.json())
+            .then(res => {
+                if (res) {
+                    getTasks();
+                }
+            })
+    }
+
     return (
         <div>
             <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
@@ -60,7 +88,7 @@ export function Class({className}:{className:string}) {
                 <AddTaskButton modalOpened={taskModalOpened} toggle={setTaskModalOpened}/>
             </Group>
             <Group justify="flex-start">
-                {tasks.map((task) => <TaskCard key={task.id} task={task}/>)}
+                {tasks.map((task) => <TaskCard key={task.id} task={task} onUpdate={handleUpdateTask} onDelete={handleDeleteTask}/>)}
             </Group>
             <AddTaskModal taskModalOpened={taskModalOpened} toggle={setTaskModalOpened} submit={handleSubmit}/>
         </div>

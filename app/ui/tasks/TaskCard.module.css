@@ -1,5 +1,10 @@
 .card {
     background-color: var(--mantine-color-body);
+
+    @mixin hover {
+      background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+      color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+    }
   }
   
   .label {
@@ -36,4 +41,12 @@
       justify-content: center;
       margin-top: var(--mantine-spacing-md);
     }
+  }
+
+  .mainLink {
+    font-weight: 500;
+    display: block;
+    text-decoration: none;
+    font-size: var(--mantine-font-size-sm);
+    color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
   }

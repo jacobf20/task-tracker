@@ -1,0 +1,9 @@
+.danger {
+    background-color: rgba(var(--mantine-color-red-9), 0.3);
+    color: var(--mantine-color-red-0);
+
+    @mixin hover {
+        background-color: var(--mantine-color-red-8);
+        color: var(--mantine-color-red-0);
+      }
+}

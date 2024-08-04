@@ -1,7 +1,12 @@
-import { Text, Card, RingProgress, Group, useMantineTheme, Progress } from '@mantine/core';
+import { Text, Card, RingProgress, Group, useMantineTheme, Progress, Space } from '@mantine/core';
 import classes from './TaskCard.module.css';
+import { TaskCardModal } from './TaskCardModal';
+import { useState } from 'react';
+import Link from 'next/link';
 
-export function TaskCard({task}:any) {
+export function TaskCard({task, onUpdate, onDelete}:any) {
+  const [cardModalOpened, setCardModalOpened] = useState(false);
+
   const stats = [
     { value: task.subTasks.filter((s:any) => s.status === "NEW").length, label: 'Remaining' },
     { value: task.subTasks.filter((s:any) => s.status === "IN_PROGRESS").length, label: 'In progress' },
@@ -21,15 +26,21 @@ export function TaskCard({task}:any) {
   return (
     <div>
       {task.subTasks.length > 0 ? (
-          <CardWithSubTasks task={task} completed={completed} total={total} items={items} theme={theme} />
+        <Link className={classes.mainLink} href="javascript:void(0)" onClick={() => setCardModalOpened(!cardModalOpened)}>
+          <CardWithSubTasks task={task} completed={completed} total={total} items={items} theme={theme} stats={stats}/>
+        </Link>
       ) : (
-        <CardWithoutSubTasks task={task} theme={theme} />
+        <Link className={classes.mainLink} href="javascript:void(0)" onClick={() => setCardModalOpened(!cardModalOpened)}>
+          <CardWithoutSubTasks task={task} theme={theme} />
+        </Link>
       )}
+      <TaskCardModal cardModalOpened={cardModalOpened} toggle={() => setCardModalOpened(!cardModalOpened)} task={task} theme={theme} onUpdate={onUpdate} onDelete={onDelete}/>
     </div>
   );
 }
 
 function CardWithoutSubTasks({task, theme}:any) {
+  const dueDate = new Date(task.dueDate).toDateString();
   const total = 100;
   let completed;
   let status;
@@ -38,7 +49,7 @@ function CardWithoutSubTasks({task, theme}:any) {
       completed = 50;
       status = "In Progress";
       break;
-    case "COMPLETED":
+    case "COMPLETE":
       completed = 100;
       status = "Completed";
       break;
@@ -61,6 +72,11 @@ function CardWithoutSubTasks({task, theme}:any) {
             <Text fz="xs" c="dimmed">
               Status
             </Text>
+            <Space h={52} />
+            <Text className={classes.label} mt={30}>{dueDate}</Text>
+            <Text fz="xs" c="dimmed">
+              Due Date
+            </Text>
           </div>
         </div>
 
@@ -76,7 +92,7 @@ function CardWithoutSubTasks({task, theme}:any) {
                   {((completed / total) * 100).toFixed(0)}%
                 </Text>
                 <Text ta="center" fz="xs" c="dimmed">
-                  In Progress
+                  Complete
                 </Text>
               </div>
             }
@@ -87,7 +103,10 @@ function CardWithoutSubTasks({task, theme}:any) {
   );
 }
 
-function CardWithSubTasks({task, completed, total, items, theme}:any) {
+function CardWithSubTasks({task, completed, total, items, theme, stats}:any) {
+  const dueDate = new Date(task.dueDate).toDateString();
+  const inProgress = stats[1].value;
+
   return (
     <Card withBorder p="xl" radius="md" className={classes.card}>
       <div className={classes.inner}>
@@ -104,6 +123,10 @@ function CardWithSubTasks({task, completed, total, items, theme}:any) {
             </Text>
           </div>
           <Group mt="lg">{items}</Group>
+          <Text className={classes.label} mt={30}>{dueDate}</Text>
+            <Text fz="xs" c="dimmed">
+              Due Date
+            </Text>
         </div>
 
         <div className={classes.ring}>
@@ -111,11 +134,11 @@ function CardWithSubTasks({task, completed, total, items, theme}:any) {
             roundCaps
             thickness={6}
             size={150}
-            sections={[{ value: (completed / total) * 100, color: theme.primaryColor }]}
+            sections={[{ value: ((completed + inProgress * 0.5) / total) * 100, color: theme.primaryColor }]}
             label={
               <div>
                 <Text ta="center" fz="lg" className={classes.label}>
-                  {((completed / total) * 100).toFixed(0)}%
+                  {(((completed + inProgress * 0.5) / total) * 100).toFixed(0)}%
                 </Text>
                 <Text ta="center" fz="xs" c="dimmed">
                   Completed

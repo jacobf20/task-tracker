@@ -1,5 +1,6 @@
 import { Modal, Button, TextInput, Group, ActionIcon, Text, Box, Divider, ModalTitle } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { DateTimePicker } from "@mantine/dates";
 import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
 import { useEffect } from "react";
 
@@ -13,6 +14,7 @@ export function AddTaskModal({taskModalOpened, toggle, submit}:any) {
         mode: "uncontrolled",
         initialValues: {
             taskName: '',
+            dueDate: '',
             subTasks: []
         },
         validate: {
@@ -46,6 +48,15 @@ export function AddTaskModal({taskModalOpened, toggle, submit}:any) {
                         placeholder="Enter Task Name"
                         key={form.key('taskName')}
                         {...form.getInputProps('taskName')}
+                    />
+                    <DateTimePicker
+                        dropdownType="modal"
+                        valueFormat="DD MMM YYYY hh:mm A"
+                        label="Due Date"
+                        placeholder="Pick Date & Time"
+                        clearable
+                        key={form.key('dueDate')}
+                        {...form.getInputProps('dueDate')}
                     />
 
                     <Divider my="md" />
