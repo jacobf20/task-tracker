@@ -12,6 +12,8 @@ export function TaskCardModal({cardModalOpened, toggle, task, theme, onUpdate, o
         { value: 100, label: <Text mt="xs" mb="md" size="sm">Complete</Text> }
     ];
 
+    const dueDate = new Date(task.dueDate).toLocaleString();
+
     const convertStatusToPercent = (status:any) => {
         switch(status) {
             case "IN_PROGRESS":
@@ -50,11 +52,14 @@ export function TaskCardModal({cardModalOpened, toggle, task, theme, onUpdate, o
                         <Center>
                             <Title mt="md" mb="md">{task.taskName}</Title>
                         </Center>
+                        <Center>
+                            <Title order={4} c="dimmed">Due {dueDate}</Title>
+                        </Center>
                     </Card.Section>
                     <Card.Section withBorder={false} mt="md" mb="md" ml="xl" mr="xl">
                         {subTasks.length > 0 ? (
                             <div>
-                            <Title mb="md" c={theme.colors.blue[3]} order={2}>Subtasks:</Title>
+                            <Title mb="md" order={2}>Subtasks:</Title>
                             <Divider mb="md" />
                             {subTasks.map((subTask:any, index:any) => (
                             <div>
@@ -76,7 +81,7 @@ export function TaskCardModal({cardModalOpened, toggle, task, theme, onUpdate, o
                         </div>
                     ) : (
                             <div>
-                                <Title mb="md" c={theme.colors.blue[3]}>Progress:</Title>
+                                <Title mb="md" order={2}>Progress:</Title>
                                 <Divider mb="md" />
                                 <Slider 
                                     defaultValue={convertStatusToPercent(task.status)}

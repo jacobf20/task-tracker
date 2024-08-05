@@ -1,4 +1,4 @@
-import { Text, Card, RingProgress, Group, useMantineTheme, Progress, Space } from '@mantine/core';
+import { Text, Card, RingProgress, Group, useMantineTheme, Progress, Space, Divider } from '@mantine/core';
 import classes from './TaskCard.module.css';
 import { TaskCardModal } from './TaskCardModal';
 import { useState } from 'react';
@@ -40,7 +40,12 @@ export function TaskCard({task, onUpdate, onDelete}:any) {
 }
 
 function CardWithoutSubTasks({task, theme}:any) {
-  const dueDate = new Date(task.dueDate).toDateString();
+  const dueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
   const total = 100;
   let completed;
   let status;
@@ -62,17 +67,18 @@ function CardWithoutSubTasks({task, theme}:any) {
     <Card withBorder p="xl" radius="md" className={classes.card}>
       <div className={classes.inner}>
         <div>
-          <Text fz="xl" className={classes.label}>
+          <Text fz="xl" className={classes.lead}>
             {task.taskName}
           </Text>
+          <Divider mt="sm"/>
           <div>
+            <Space h={52} />
             <Text className={classes.lead} mt={30}>
               {status}
             </Text>
             <Text fz="xs" c="dimmed">
               Status
             </Text>
-            <Space h={52} />
             <Text className={classes.label} mt={30}>{dueDate}</Text>
             <Text fz="xs" c="dimmed">
               Due Date
@@ -104,16 +110,22 @@ function CardWithoutSubTasks({task, theme}:any) {
 }
 
 function CardWithSubTasks({task, completed, total, items, theme, stats}:any) {
-  const dueDate = new Date(task.dueDate).toDateString();
+  const dueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
   const inProgress = stats[1].value;
 
   return (
     <Card withBorder p="xl" radius="md" className={classes.card}>
       <div className={classes.inner}>
         <div>
-          <Text fz="xl" className={classes.label}>
+          <Text fz="xl" className={classes.lead}>
             {task.taskName}
           </Text>
+          <Divider mt="sm"/>
           <div>
             <Text className={classes.lead} mt={30}>
               {completed}

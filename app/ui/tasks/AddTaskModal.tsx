@@ -18,7 +18,8 @@ export function AddTaskModal({taskModalOpened, toggle, submit}:any) {
             subTasks: []
         },
         validate: {
-            taskName: (value) => (value.length > 0 ? null : 'Task Name Required')
+            taskName: (value) => (value.length > 0 ? null : 'Task Name Required'),
+            dueDate: (value) => (value ? null : 'Due Date Required')
         }
     });
 
@@ -50,6 +51,7 @@ export function AddTaskModal({taskModalOpened, toggle, submit}:any) {
                         {...form.getInputProps('taskName')}
                     />
                     <DateTimePicker
+                        withAsterisk
                         dropdownType="modal"
                         valueFormat="DD MMM YYYY hh:mm A"
                         label="Due Date"

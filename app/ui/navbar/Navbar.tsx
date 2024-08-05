@@ -13,7 +13,7 @@ import { LinksGroup, NavbarLinksGroup } from './NavbarLinksGroup';
 import classes from './Navbar.module.css';
 
 const navbarLinks = [
-  { label: 'Dashboard', icon: IconGauge, link: '/' },
+  { label: 'Dashboard', icon: IconGauge, link: '/ui/dashboard' },
   {
     label: 'Classes',
     icon: IconSchool,
