@@ -9,7 +9,7 @@ import {
   IconAdjustments,
   IconLock,
 } from '@tabler/icons-react';
-import { LinksGroup, NavbarLinksGroup } from './NavbarLinksGroup';
+import { LinksGroup } from './NavbarLinksGroup';
 import classes from './Navbar.module.css';
 
 const navbarLinks = [

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, rem } from '@mantine/core';
-import { IconCalendarStats, IconChevronRight, IconGauge, IconSchool } from '@tabler/icons-react';
+import { Group, Box, Collapse, ThemeIcon, UnstyledButton, rem } from '@mantine/core';
+import { IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarLinksGroup.module.css';
 import Link from 'next/link';
 
@@ -83,17 +83,5 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: 
         </div>
         }
     </div>
-  );
-}
-
-interface NavbarLinksGroupProps {
-  linkGroups: {linkGroup: LinksGroupProps}[]
-}
-
-export function NavbarLinksGroup({linkGroups}:NavbarLinksGroupProps) {
-  return (
-    <Box mih={220} p="md">
-      {linkGroups.map((item) => <LinksGroup {...item} />)}
-    </Box>
   );
 }

@@ -88,7 +88,7 @@ export function Class({className}:{className:string}) {
                 <AddTaskButton modalOpened={taskModalOpened} toggle={setTaskModalOpened}/>
             </Group>
             <Group justify="flex-start">
-                {tasks.map((task) => <TaskCard key={task.id} task={task} onUpdate={handleUpdateTask} onDelete={handleDeleteTask}/>)}
+                {tasks.map((task, index) => <TaskCard key={index} task={task} onUpdate={handleUpdateTask} onDelete={handleDeleteTask}/>)}
             </Group>
             <AddTaskModal taskModalOpened={taskModalOpened} toggle={setTaskModalOpened} submit={handleSubmit}/>
         </div>

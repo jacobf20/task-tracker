@@ -1,10 +1,12 @@
-import { Modal, Button, TextInput, Group, ActionIcon, Text, Box, Divider, ModalTitle } from "@mantine/core";
+import { Modal, Button, TextInput, Group, ActionIcon, Text, Box, Divider, ModalTitle, Indicator, useMantineTheme, Container } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { DateTimePicker } from "@mantine/dates";
-import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
+import { DatePickerProps, DateTimePicker } from "@mantine/dates";
+import { IconCalendar, IconChecklist, IconCirclePlus, IconSubtask, IconTrash } from "@tabler/icons-react";
 import { useEffect } from "react";
 
 export function AddTaskModal({taskModalOpened, toggle, submit}:any) {
+
+    const theme = useMantineTheme();
 
     useEffect(() => {
         form.reset();
@@ -26,6 +28,7 @@ export function AddTaskModal({taskModalOpened, toggle, submit}:any) {
     const subTaskFields = form.getValues().subTasks.map((item, index) => (
         <Group key={item} mt="xs">
             <TextInput 
+                leftSection={<IconSubtask />}
                 placeholder="Enter Sub-Task Name"
                 withAsterisk
                 style={{ flex: 1 }}
@@ -38,12 +41,26 @@ export function AddTaskModal({taskModalOpened, toggle, submit}:any) {
         </Group>
     ));
 
+    const today = new Date();
+
+    const dayRenderer: DatePickerProps['renderDay'] = (date) => {
+        const shouldIndicate = date.getDate() === today.getDate() 
+        && date.getMonth() === today.getMonth()
+        && date.getFullYear() === today.getFullYear();
+        return (
+            <Indicator size={4} color={theme.colors.blue[3]} position="top-center" disabled={!shouldIndicate}>
+                <div>{date.getDate()}</div>
+            </Indicator>
+        );
+    }
+
 
     return (
         <div>
             <Modal opened={taskModalOpened} onClose={toggle} title="Add New Task" centered overlayProps={{backgroundOpacity: 0.55, blur: 3}}>
                 <form onSubmit={form.onSubmit((values) => {submit(values); toggle();})}>
                     <TextInput 
+                        leftSection={<IconChecklist />}
                         withAsterisk
                         label="Task Name"
                         placeholder="Enter Task Name"
@@ -51,12 +68,15 @@ export function AddTaskModal({taskModalOpened, toggle, submit}:any) {
                         {...form.getInputProps('taskName')}
                     />
                     <DateTimePicker
+                        leftSection={<IconCalendar />}
                         withAsterisk
                         dropdownType="modal"
                         valueFormat="DD MMM YYYY hh:mm A"
                         label="Due Date"
                         placeholder="Pick Date & Time"
+                        highlightToday
                         clearable
+                        renderDay={dayRenderer}
                         key={form.key('dueDate')}
                         {...form.getInputProps('dueDate')}
                     />

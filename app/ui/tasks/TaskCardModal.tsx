@@ -62,7 +62,7 @@ export function TaskCardModal({cardModalOpened, toggle, task, theme, onUpdate, o
                             <Title mb="md" order={2}>Subtasks:</Title>
                             <Divider mb="md" />
                             {subTasks.map((subTask:any, index:any) => (
-                            <div>
+                            <div key={index}>
                                 <Title order={4} mb="md">{subTask.subTaskName}</Title>
                                 <Slider
                                     defaultValue={convertStatusToPercent(subTask.status)}
