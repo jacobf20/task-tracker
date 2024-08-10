@@ -39,6 +39,21 @@ export function TaskCard({task, onUpdate, onDelete}:any) {
   );
 }
 
+function getProgressColor(taskDueDate:any, theme:any) {
+  let tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  let inThreeDays = new Date();
+  inThreeDays.setDate(inThreeDays.getDate() + 3);
+  const dueDate = new Date(taskDueDate)
+  if (dueDate.getDate() === tomorrow.getDate()) {
+    return theme.colors.red[5];
+  } else if (dueDate.getDate() <= inThreeDays.getDate()) {
+    return theme.colors.orange[5];
+  } else {
+    return theme.colors.green[5];
+  }
+}
+
 function CardWithoutSubTasks({task, theme}:any) {
   const dueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
     weekday: "long",
@@ -89,9 +104,9 @@ function CardWithoutSubTasks({task, theme}:any) {
         <div className={classes.ring}>
           <RingProgress
             roundCaps
-            thickness={6}
+            thickness={10}
             size={150}
-            sections={[{ value: (completed / total) * 100, color: theme.primaryColor }]}
+            sections={[{ value: (completed / total) * 100, color: getProgressColor(task.dueDate, theme) }]}
             label={
               <div>
                 <Text ta="center" fz="lg" className={classes.label}>
@@ -144,9 +159,9 @@ function CardWithSubTasks({task, completed, total, items, theme, stats}:any) {
         <div className={classes.ring}>
           <RingProgress
             roundCaps
-            thickness={6}
+            thickness={8}
             size={150}
-            sections={[{ value: ((completed + inProgress * 0.5) / total) * 100, color: theme.primaryColor }]}
+            sections={[{ value: ((completed + inProgress * 0.5) / total) * 100, color: getProgressColor(task.dueDate, theme) }]}
             label={
               <div>
                 <Text ta="center" fz="lg" className={classes.label}>
