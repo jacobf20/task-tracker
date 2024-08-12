@@ -28,6 +28,34 @@ export function Dashboard() {
       });
   }
 
+  const handleDeleteTask = (task:any) => {
+    const url = "http://localhost:8080/task?id=" + task.id;
+    const options = {
+        method: 'DELETE'
+    }
+    fetch(url, options)
+        .then(() => getTasks());
+}
+
+const handleUpdateTask = (task:any) => {
+    const url = "http://localhost:8080/task";
+    let formData = new Blob([JSON.stringify(task)]);
+    const options = {
+        method: 'PUT',
+        headers: {
+            "content-type": 'application/json'
+        },
+        body: formData
+    }
+    fetch(url, options)
+        .then(res => res.json())
+        .then(res => {
+            if (res) {
+                getTasks();
+            }
+        })
+}
+
   return <div>
     <Group justify="space-between">
       <Title order={1} mb="md">Due In {range.split('')[0]} Days</Title>
@@ -39,7 +67,7 @@ export function Dashboard() {
       />
     </Group>
     <Group justify="flex-start">
-      {tasks.map((task, index) => <TaskCard key={index} task={task}/>)}
+      {tasks.map((task, index) => <TaskCard key={index} task={task} onUpdate={handleUpdateTask} onDelete={handleDeleteTask}/>)}
     </Group>
   </div>;
 }
