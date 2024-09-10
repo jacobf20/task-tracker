@@ -93,6 +93,17 @@ export function TaskCardModal({cardModalOpened, toggle, task, theme, onUpdate, o
 
     const onSubTaskChange = (index:any, val:any) => {
         task.subTasks[index].status = convertPercentToStatus(val);
+        let inProgressCount = 0;
+        let completeCount = 0;
+        task.subTasks.map((subTask:any) => {
+            if (subTask.status === "IN_PROGRESS") {
+                inProgressCount += 1;
+            } else if (subTask.status === "COMPLETE") {
+                completeCount += 1;
+            }
+        })
+        task.inProgressSubTasks = inProgressCount;
+        task.completedSubTasks = completeCount;
     }
 
     const onTaskChange = (val:any) => {

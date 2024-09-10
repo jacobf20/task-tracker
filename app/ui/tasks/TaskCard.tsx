@@ -40,12 +40,13 @@ export function TaskCard({task, onUpdate, onDelete}:any) {
 }
 
 function getProgressColor(taskDueDate:any, theme:any) {
+  let today = new Date();
   let tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   let inThreeDays = new Date();
   inThreeDays.setDate(inThreeDays.getDate() + 3);
   const dueDate = new Date(taskDueDate)
-  if (dueDate.getDate() === tomorrow.getDate()) {
+  if (dueDate.getDate() === tomorrow.getDate() || dueDate.getDate() === today.getDate() || today.getDate() > dueDate.getDate()) {
     return theme.colors.red[5];
   } else if (dueDate.getDate() <= inThreeDays.getDate()) {
     return theme.colors.orange[5];

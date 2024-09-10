@@ -83,12 +83,17 @@ export function Class({className}:{className:string}) {
     return (
         <div>
             <LoadingOverlay visible={isLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
-            <Group justify="space-between">
+            <Group justify="space-between" pb="xl">
                 <Title pb="lg">{title}</Title>
                 <AddTaskButton modalOpened={taskModalOpened} toggle={setTaskModalOpened}/>
             </Group>
+            <Title order={2} pb="md">New or In Progress:</Title>
+            <Group justify="flex-start" pb="xl">
+                {tasks.filter((task:any) => (task.subTasks.length === 0 && task.status != "COMPLETE") || task.completedSubTasks != task.subTasks.length).map((task, index) => <TaskCard key={index} task={task} onUpdate={handleUpdateTask} onDelete={handleDeleteTask}/>)}
+            </Group>
+            <Title order={2} pb="md">Complete:</Title>
             <Group justify="flex-start">
-                {tasks.map((task, index) => <TaskCard key={index} task={task} onUpdate={handleUpdateTask} onDelete={handleDeleteTask}/>)}
+                {tasks.filter((task:any) => task.status === "COMPLETE" || (task.subTasks.length > 0 && task.completedSubTasks === task.subTasks.length)).map((task, index) => <TaskCard key={index} task={task} onUpdate={handleUpdateTask} onDelete={handleDeleteTask}/>)}
             </Group>
             <AddTaskModal taskModalOpened={taskModalOpened} toggle={setTaskModalOpened} submit={handleSubmit}/>
         </div>
